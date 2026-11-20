@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pastelitos Deliciosos</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #fff4e8;
+    text-align: center;
+    margin: 0;
+    color: #5c3825;
+}
+
+header {
+    background: #a9683f;
+    color: white;
+    padding: 25px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.contenedor {
+    max-width: 500px;
+    margin: 25px auto;
+    padding: 20px;
+}
+
+.producto {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px #0002;
+}
+
+.producto h2 {
+    color: #a9683f;
+}
+
+input {
+    padding: 12px;
+    width: 85%;
+    margin: 10px;
+    border: 1px solid #d8b69c;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    background: #a9683f;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    margin: 8px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #814b2d;
+}
+
+.total {
+    font-size: 23px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+footer {
+    background: #a9683f;
+    color: white;
+    padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🧁 Pastelitos Deliciosos</h1>
+    <p>Hechos con mucho cariño ❤️</p>
+</header>
+
+<div class="contenedor">
+
+    <h2>¡Elige tus pastelitos!</h2>
+
+    <div class="producto">
+        <h2>🥕 Pastelito de zanahoria</h2>
+        <p>Precio: $20 MXN</p>
+        <input type="number" id="zanahoria"
+        min="0" step="1" value="0" oninput="calcular()">
+    </div>
+
+    <div class="producto">
+        <h2>🍌 Pastelito de plátano</h2>
+        <p>Precio: $15 MXN</p>
+        <input type="number" id="platano"
+        min="0" step="1" value="0" oninput="calcular()">
+    </div>
+
+    <h3>Datos del pedido</h3>
+
+    <input type="text" id="nombre"
+    placeholder="Tu nombre">
+
+    <input type="text" id="direccion"
+    placeholder="Dirección de entrega">
+
+    <div class="total"
+    Total: $<span id="total">0</span> MXN
+    </div>
+
+    <h3>¿A qué WhatsApp enviamos tu pedido?</h3>
+
+    <button onclick="HacerPedido(1)">
+         Enviar al 312 317 2330
+    </button>
+
+    <button onclick="HacerPedido(2)">
+        📲 Enviar al 312 102 13 93
+    </button>
+
+</div>
+
+<footer>
+    <p>Gracias por comprar con nosotros ❤️</p>
+</footer>
+
+<script>
+
+const precioZanahoria = 20;
+const precioPlatano = 15;
+
+const telefonos = {
+    1: "523123172330",
+    2: "523121021393"
+};
+
+function calcular() {
+
+    let zanahoria = Math.max(0, parseInt(
+        document.getElementById("zanahoria").value
+    ) || 0);
+
+    let platano = Math.max(0, parseInt(
+        document.getElementById("platano").value
+    ) || 0);
+
+    let total =
+        zanahoria * precioZanahoria +
+        platano * precioPlatano;
+
+    document.getElementById("total").textContent = total;
+}
+
+function HacerPedido(numero) {
+
+    let nombre = document.getElementById("nombre").value.trim();
+    let direccion = document.getElementById("direccion").value.trim();
+
+    let zanahoria = Number(document.getElementById("zanahoria").value);
+    let platano = Number(document.getElementById("platano").value);
+
+    if (!nombre || !direccion) {
+        alert("Por favor escribe tu nombre y dirección.");
+        return;
+    }
+
+    if (
+        !Number.isInteger(zanahoria) ||
+        !Number.isInteger(platano) ||
+        zanahoria < 0 ||
+        platano < 0
+    ) {
+        alert("Escribe cantidades válidas.");
+        return;
+    }
+
+    if (zanahoria + platano === 0) {
+        alert("Selecciona al menos un pastelito.");
+        return;
+    }
+
+    let total =
+        zanahoria * precioZanahoria +
+        platano * precioPlatano;
+
+    let mensaje =
+        "¡Hola! Quiero hacer un pedido de pastelitos 🧁\n\n" +
+        "Nombre: " + nombre + "\n" +
+        "Dirección: " + direccion + "\n\n" +
+        "Pastelitos de zanahoria: " + zanahoria +
+        " x $20\n" +
+        "Pastelitos de plátano: " + platano +
+        " x $15\n\n" +
+        "TOTAL: $" + total + " MXN";
+
+    let telefono = telefonos[numero];
+
+    let url = "https://wa.me/" + telefono +
+              "?text=" + encodeURIComponent(mensaje);
+
+    window.open(url, "_blank");
+}
+
+</script>
+
+</body>
+</html>
